@@ -5,34 +5,50 @@ import java.awt.event.KeyListener;
 
 public class Pong extends Applet implements Runnable, KeyListener {
     final int WIDTH = 700, HEIGHT = 500;
+    boolean start;
     Thread thread;
     HumanPaddle p1, p2;
+    AIPaddle p3;
     Ball b;
+    Graphics gfx;
+    Image img;
 
     // Runs on start
     public void init() {
         this.resize(WIDTH, HEIGHT);
+        start = false;
         this.addKeyListener(this);
         p1 = new HumanPaddle(1);
         p2 = new HumanPaddle(2);
         b = new Ball();
+        p3 = new AIPaddle(2, b);
+        img = createImage(WIDTH, HEIGHT);
+        gfx = img.getGraphics();
         thread = new Thread(this);
         thread.start();
     }
 
     // Paints background
     public void paint(Graphics g){
-        g.setColor(Color.black);
-        g.fillRect(0,0, WIDTH, HEIGHT);
+        gfx.setColor(Color.black);
+        gfx.fillRect(0,0, WIDTH, HEIGHT);
         if(b.getX() < -10 || b.getX() > 710){
-            g.setColor(Color.red);
-            g.drawString("Game Over", 350, 250);
+            gfx.setColor(Color.red);
+            gfx.drawString("Game Over", 350, 250);
         }
         else {
-            p1.draw(g);
-            p2.draw(g);
-            b.draw(g);
+            p1.draw(gfx);
+            p2.draw(gfx);
+            b.draw(gfx);
         }
+
+        if(!start){
+            gfx.setColor(Color.white);
+            gfx.drawString("Pong", 340, 100);
+            gfx.drawString("Press Enter to begin...", 310, 130);
+        }
+
+        g.drawImage(img, 0,0, this);
     }
 
     // Updates the screen when called
@@ -43,11 +59,12 @@ public class Pong extends Applet implements Runnable, KeyListener {
     // Continuously running code
     public void run(){
         while(true){
-            p1.move();
-            p2.move();
-            b.move();
-            b.checkPaddleCollision(p1);
-            b.checkPaddleCollision(p2);
+            if(start) {
+                p1.move();
+                p2.move();
+                b.move();
+                b.checkPaddleCollision(p1,p2);
+            }
             repaint();
             try{
                 Thread.sleep(10);
@@ -74,6 +91,9 @@ public class Pong extends Applet implements Runnable, KeyListener {
         }
         else if(e.getKeyCode() == KeyEvent.VK_DOWN){
             p2.setDownAccel(true);
+        }
+        if(e.getKeyCode() == KeyEvent.VK_ENTER){
+            start = true;
         }
     }
 
