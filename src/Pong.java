@@ -54,6 +54,7 @@ public class Pong extends Applet implements Runnable, KeyListener {
             gfx.drawString("Pong", 340, 100);
             gfx.drawString("Press 1 for single player", 310, 130);
             gfx.drawString("Press 2 for two player", 310, 160);
+            gfx.drawString("Press Q to exit", 310, 190);
         }
 
         g.drawImage(img, 0,0, this);
@@ -123,6 +124,10 @@ public class Pong extends Applet implements Runnable, KeyListener {
             p2 = new HumanPaddle(2);
             b = new Ball();
             p3 = new AIPaddle(2, b);
+        }
+        if(e.getKeyCode() == KeyEvent.VK_Q){
+            if(start1 == 0 && start2 == 0)
+                System.exit(0);
         }
     }
 
