@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 
 public class Pong extends Applet implements Runnable, KeyListener {
     final int WIDTH = 700, HEIGHT = 500;
-    boolean start;
+    int start1, start2;
     Thread thread;
     HumanPaddle p1, p2;
     AIPaddle p3;
@@ -16,7 +16,8 @@ public class Pong extends Applet implements Runnable, KeyListener {
     // Runs on start
     public void init() {
         this.resize(WIDTH, HEIGHT);
-        start = false;
+        start1 = 0;
+        start2 = 0;
         this.addKeyListener(this);
         p1 = new HumanPaddle(1);
         p2 = new HumanPaddle(2);
@@ -36,16 +37,22 @@ public class Pong extends Applet implements Runnable, KeyListener {
             gfx.setColor(Color.red);
             gfx.drawString("Game Over", 350, 250);
         }
-        else {
+        else if(start1 == 1){
             p1.draw(gfx);
             p2.draw(gfx);
             b.draw(gfx);
         }
+        else if(start2 == 1){
+            p1.draw(gfx);
+            p3.draw(gfx);
+            b.draw(gfx);
+        }
 
-        if(!start){
+        if(start1 == 0 && start2 == 0){
             gfx.setColor(Color.white);
             gfx.drawString("Pong", 340, 100);
-            gfx.drawString("Press Enter to begin...", 310, 130);
+            gfx.drawString("Press 1 for single player", 310, 130);
+            gfx.drawString("Press 2 for two player", 310, 160);
         }
 
         g.drawImage(img, 0,0, this);
@@ -59,11 +66,19 @@ public class Pong extends Applet implements Runnable, KeyListener {
     // Continuously running code
     public void run(){
         while(true){
-            if(start) {
+            if(start1 == 1) {
+                start2 = 0;
                 p1.move();
                 p2.move();
                 b.move();
                 b.checkPaddleCollision(p1,p2);
+            }
+            else if(start2 == 1) {
+                start1 = 0;
+                p1.move();
+                p3.move();
+                b.move();
+                b.checkPaddleCollision(p1, p3);
             }
             repaint();
             try{
@@ -92,8 +107,13 @@ public class Pong extends Applet implements Runnable, KeyListener {
         else if(e.getKeyCode() == KeyEvent.VK_DOWN){
             p2.setDownAccel(true);
         }
-        if(e.getKeyCode() == KeyEvent.VK_ENTER){
-            start = true;
+        if(e.getKeyCode() == KeyEvent.VK_1){
+            if(start1 != 1)
+                start2 = 1;
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_2){
+            if(start2 != 1)
+                start1 = 1;
         }
     }
 
