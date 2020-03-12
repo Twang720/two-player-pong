@@ -53,7 +53,7 @@ public class Pong extends Applet implements Runnable, KeyListener {
             gfx.setColor(Color.white);
             gfx.drawString("Pong", 340, 100);
             gfx.drawString("Press 1 for single player", 310, 130);
-            gfx.drawString("Press 2 for two player", 310, 160);
+            gfx.drawString("Press 2 for two players", 310, 160);
             gfx.drawString("Press Q to exit", 310, 190);
         }
 

@@ -32,11 +32,15 @@ public class Ball {
         if(x <= 50 && x >= 40){
             if(y >= p1.getY() && y <= p1.getY() + 80){
                 xVel = -xVel;
+                xVel *= 1.05;
+                yVel *= 1.05;
             }
         }
         else if(x >= 650 && x <= 660){
             if(y >= p2.getY() && y <= p2.getY() + 80){
                 xVel = -xVel;
+                xVel *= 1.05;
+                yVel *= 1.05;
             }
         }
     }
@@ -47,6 +51,13 @@ public class Ball {
 
         if(y < 10 || y > 490){
             yVel = -yVel;
+        }
+
+        if(xVel >= 7){
+            xVel = 7;
+        }
+        if(yVel >= 7){
+            yVel = 7;
         }
 
     }
