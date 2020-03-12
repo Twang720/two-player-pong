@@ -37,6 +37,7 @@ public class Pong extends Applet implements Runnable, KeyListener {
             gfx.setColor(Color.red);
             gfx.drawString("Game Over", 350, 250);
             gfx.drawString("Press Enter to go back to main menu", 270, 280);
+            gfx.drawString("Press R to play again", 270, 310);
         }
         else if(start1 == 1){
             p1.draw(gfx);
@@ -128,6 +129,14 @@ public class Pong extends Applet implements Runnable, KeyListener {
         if(e.getKeyCode() == KeyEvent.VK_Q){
             if(start1 == 0 && start2 == 0)
                 System.exit(0);
+        }
+        if(e.getKeyCode() == KeyEvent.VK_R){
+            if(b.getX() < -10 || b.getX() > 710){
+                p1 = new HumanPaddle(1);
+                p2 = new HumanPaddle(2);
+                b = new Ball();
+                p3 = new AIPaddle(2, b);
+            }
         }
     }
 
